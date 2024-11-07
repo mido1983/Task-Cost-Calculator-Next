@@ -3,15 +3,13 @@ import '../styles/global.css'; // Ваши глобальные стили, ес
 import { useEffect, useState } from 'react';
 
 export default function App({ Component, pageProps }) {
-    const [globalSettings, setGlobalSettings] = useState({
-        hourlyRate: '',
-        globalDiscount: '',
-        taxRate: '',
-        includeTaxInCost: true,
-    });
-
     const [tasks, setTasks] = useState([]);
-    
+    const [globalSettings, setGlobalSettings] = useState({
+        hourlyRate: 0,
+        globalDiscount: 0,
+        taxRate: 0,
+        includeTaxInCost: false
+    });
     const [clientData, setClientData] = useState({
         name: '',
         email: '',
@@ -19,47 +17,48 @@ export default function App({ Component, pageProps }) {
         address: ''
     });
 
-    // Загрузка всех данных при старте приложения
+    // Загрузка данных только на клиенте
     useEffect(() => {
-        // Загрузка настроек
-        const savedSettings = localStorage.getItem('globalSettings');
-        if (savedSettings) {
-            setGlobalSettings(JSON.parse(savedSettings));
-        }
+        try {
+            const savedTasks = localStorage.getItem('tasks');
+            if (savedTasks) {
+                setTasks(JSON.parse(savedTasks));
+            }
 
-        // Загрузка задач
-        const savedTasks = localStorage.getItem('tasks');
-        if (savedTasks) {
-            setTasks(JSON.parse(savedTasks));
-        }
+            const savedSettings = localStorage.getItem('globalSettings');
+            if (savedSettings) {
+                setGlobalSettings(JSON.parse(savedSettings));
+            }
 
-        // Загрузка данных клиента
-        const savedClientData = localStorage.getItem('clientData');
-        if (savedClientData) {
-            setClientData(JSON.parse(savedClientData));
+            const savedClientData = localStorage.getItem('clientData');
+            if (savedClientData) {
+                setClientData(JSON.parse(savedClientData));
+            }
+        } catch (error) {
+            console.error('Error loading data:', error);
         }
     }, []);
 
-    // Сохранение при изменениях
+    // Сохранение данных при изменениях
     useEffect(() => {
-        localStorage.setItem('globalSettings', JSON.stringify(globalSettings));
-    }, [globalSettings]);
-
-    useEffect(() => {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
+        if (tasks) localStorage.setItem('tasks', JSON.stringify(tasks));
     }, [tasks]);
 
     useEffect(() => {
-        localStorage.setItem('clientData', JSON.stringify(clientData));
+        if (globalSettings) localStorage.setItem('globalSettings', JSON.stringify(globalSettings));
+    }, [globalSettings]);
+
+    useEffect(() => {
+        if (clientData) localStorage.setItem('clientData', JSON.stringify(clientData));
     }, [clientData]);
 
     return (
         <Component 
             {...pageProps} 
-            globalSettings={globalSettings} 
-            setGlobalSettings={setGlobalSettings}
             tasks={tasks}
             setTasks={setTasks}
+            globalSettings={globalSettings}
+            setGlobalSettings={setGlobalSettings}
             clientData={clientData}
             setClientData={setClientData}
         />
