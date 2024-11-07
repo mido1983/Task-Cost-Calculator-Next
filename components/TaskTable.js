@@ -12,6 +12,20 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
         setIsClient(true);
     }, []);
 
+    // Функция для расчета стоимости задачи
+    const calculateTaskCost = (task) => {
+        const timeInHours = parseFloat(task.timeHours) + parseFloat(task.timeMinutes) / 60 || 0;
+        const grossCost = timeInHours * parseFloat(task.hourlyRate || 0);
+        const discountAmount = grossCost * (parseFloat(task.discount || 0) / 100);
+        let taskCost = grossCost - discountAmount;
+
+        // Всегда добавляем налог (даже если он 0)
+        const tax = taskCost * (parseFloat(globalSettings.taxRate || 0) / 100);
+        taskCost += tax;
+
+        return task.free ? 0 : taskCost.toFixed(2);
+    };
+
     // Обновляем задачи при изменении глобальных настроек
     useEffect(() => {
         const updatedTasks = tasks.map(task => {
@@ -30,19 +44,9 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
                 needsUpdate = true;
             }
 
-            // Если нужно обновить, пересчитываем стоимость
-            if (needsUpdate) {
-                const timeInHours = parseFloat(task.timeHours) + parseFloat(task.timeMinutes) / 60 || 0;
-                const grossCost = timeInHours * newTask.hourlyRate;
-                const discountAmount = grossCost * (newTask.discount / 100);
-                let taskCost = grossCost - discountAmount;
-
-                if (globalSettings.includeTaxInCost) {
-                    const tax = taskCost * (globalSettings.taxRate / 100);
-                    taskCost += tax;
-                }
-
-                newTask.cost = task.free ? 0 : taskCost.toFixed(2);
+            // Пересчитываем стоимость при любом изменении налога или если нужно обновить другие значения
+            if (needsUpdate || prevSettings.taxRate !== globalSettings.taxRate) {
+                newTask.cost = calculateTaskCost(newTask);
             }
 
             return newTask;
@@ -80,19 +84,9 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
             if (taskIndex === index) {
                 const updatedTask = { ...task, [field]: value };
 
-                // Пересчитываем стоимость только если изменились связанные поля
+                // Пересчитываем стоимость если изменились связанные поля
                 if (['timeHours', 'timeMinutes', 'hourlyRate', 'discount', 'free'].includes(field)) {
-                    const timeInHours = parseFloat(updatedTask.timeHours) + parseFloat(updatedTask.timeMinutes) / 60 || 0;
-                    const grossCost = timeInHours * parseFloat(updatedTask.hourlyRate || 0);
-                    const discountAmount = grossCost * (parseFloat(updatedTask.discount || 0) / 100);
-                    let taskCost = grossCost - discountAmount;
-
-                    if (globalSettings.includeTaxInCost) {
-                        const tax = taskCost * (globalSettings.taxRate / 100);
-                        taskCost += tax;
-                    }
-
-                    updatedTask.cost = updatedTask.free ? 0 : taskCost.toFixed(2);
+                    updatedTask.cost = calculateTaskCost(updatedTask);
                 }
 
                 return updatedTask;

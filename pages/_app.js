@@ -8,7 +8,7 @@ export default function App({ Component, pageProps }) {
         hourlyRate: 0,
         globalDiscount: 0,
         taxRate: 0,
-        includeTaxInCost: false
+        includeTaxInCost: true
     });
     const [clientData, setClientData] = useState({
         name: '',

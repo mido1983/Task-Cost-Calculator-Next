@@ -57,18 +57,18 @@ export default function GlobalSettings({ globalSettings, setGlobalSettings }) {
                     />
                 </div>
 
-                <div className="form-group form-check">
-                    <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="includeTaxInCost"
-                        checked={globalSettings.includeTaxInCost}
-                        onChange={(e) => updateSettings('includeTaxInCost', e.target.checked)}
-                    />
-                    <label className="form-check-label" htmlFor="includeTaxInCost">
-                        Include Tax in Costs
-                    </label>
-                </div>
+                {/*<div className="form-group form-check">*/}
+                {/*    <input*/}
+                {/*        type="checkbox"*/}
+                {/*        className="form-check-input"*/}
+                {/*        id="includeTaxInCost"*/}
+                {/*        checked={globalSettings.includeTaxInCost}*/}
+                {/*        onChange={(e) => updateSettings('includeTaxInCost', e.target.checked)}*/}
+                {/*    />*/}
+                {/*    <label className="form-check-label" htmlFor="includeTaxInCost">*/}
+                {/*        Include Tax in Costs*/}
+                {/*    </label>*/}
+                {/*</div>*/}
             </form>
         </div>
     );
