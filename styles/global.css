@@ -1,0 +1,137 @@
+
+
+
+
+
+
+.form-inline{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: center;
+}
+
+
+
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    h1, h2 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    #taskTable tbody tr td {
+        flex-direction: column;
+    }
+
+    #taskTable tbody td input {
+        margin-bottom: 5px;
+    }
+
+    #taskTable tbody td span {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+    }
+
+    .form-control {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .row.mb-3 > .col-md-6 {
+        width: 100%;
+    }
+
+    /* Таблица задач */
+    #taskTable {
+        font-size: 0.85rem;
+    }
+
+    #taskTable thead {
+        display: none;
+    }
+
+    #taskTable tbody tr {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        background-color: #f9f9f9;
+    }
+
+    #taskTable tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+    }
+
+    #taskTable tbody td .form-control {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+
+    #taskTable tbody td span {
+        font-weight: bold;
+    }
+
+    .text-right {
+        text-align: center;
+    }
+
+    /* Кнопки */
+    .btn {
+        font-size: 0.9rem;
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .text-center.mb-4 button {
+        margin-bottom: 10px;
+    }
+
+    /* Секция Summary */
+    .summary {
+        font-size: 0.9rem;
+    }
+
+    .summary h4 {
+        text-align: center;
+    }
+
+    .summary p {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    h1, h2 {
+        font-size: 1.25rem;
+    }
+
+    .btn {
+        font-size: 0.8rem;
+    }
+
+    #taskTable tbody tr {
+        padding: 8px;
+    }
+}
