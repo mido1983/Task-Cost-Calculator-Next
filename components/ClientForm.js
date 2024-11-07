@@ -1,24 +1,8 @@
 import { useState, useEffect } from 'react';
 
 export default function ClientForm({ clientData, setClientData }) {
-    useEffect(() => {
-        // Загружаем данные клиента из локального хранилища
-        const savedClientData = JSON.parse(localStorage.getItem('clientData')) || {
-            name: '',
-            email: '',
-            phone: '',
-            address: '',
-        };
-        setClientData(savedClientData);
-    }, [setClientData]);
-
-    useEffect(() => {
-        // Сохраняем данные клиента в локальное хранилище
-        localStorage.setItem('clientData', JSON.stringify(clientData));
-    }, [clientData]);
-
     const updateClientData = (field, value) => {
-        setClientData({ ...clientData, [field]: value });
+        setClientData(prev => ({ ...prev, [field]: value }));
     };
 
     return (

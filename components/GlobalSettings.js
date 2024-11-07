@@ -5,6 +5,13 @@ export default function GlobalSettings({ globalSettings, setGlobalSettings }) {
         setGlobalSettings(prev => ({ ...prev, [field]: value }));
     };
 
+    const safeNumberValue = (value) => {
+        if (value === null || value === undefined || isNaN(value)) {
+            return '';
+        }
+        return value.toString();
+    };
+
     return (
         <div className="card p-3 mb-4">
             <h2 className="card-title">Global Settings</h2>
@@ -15,9 +22,10 @@ export default function GlobalSettings({ globalSettings, setGlobalSettings }) {
                         type="number"
                         className="form-control"
                         id="hourlyRate"
-                        value={globalSettings.hourlyRate}
-                        onChange={(e) => updateSettings('hourlyRate', parseFloat(e.target.value))}
+                        value={safeNumberValue(globalSettings.hourlyRate)}
+                        onChange={(e) => updateSettings('hourlyRate', parseFloat(e.target.value) || 0)}
                         min="0"
+                        step="0.01"
                     />
                 </div>
 
@@ -27,10 +35,11 @@ export default function GlobalSettings({ globalSettings, setGlobalSettings }) {
                         type="number"
                         className="form-control"
                         id="globalDiscount"
-                        value={globalSettings.globalDiscount}
-                        onChange={(e) => updateSettings('globalDiscount', parseFloat(e.target.value))}
+                        value={safeNumberValue(globalSettings.globalDiscount)}
+                        onChange={(e) => updateSettings('globalDiscount', parseFloat(e.target.value) || 0)}
                         min="0"
                         max="100"
+                        step="0.01"
                     />
                 </div>
 
@@ -40,10 +49,11 @@ export default function GlobalSettings({ globalSettings, setGlobalSettings }) {
                         type="number"
                         className="form-control"
                         id="taxRate"
-                        value={globalSettings.taxRate}
-                        onChange={(e) => updateSettings('taxRate', parseFloat(e.target.value))}
+                        value={safeNumberValue(globalSettings.taxRate)}
+                        onChange={(e) => updateSettings('taxRate', parseFloat(e.target.value) || 0)}
                         min="0"
                         max="100"
+                        step="0.01"
                     />
                 </div>
 
