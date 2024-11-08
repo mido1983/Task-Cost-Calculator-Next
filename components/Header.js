@@ -1,9 +1,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Header() {
     const [isNavOpen, setIsNavOpen] = useState(false);
+    const router = useRouter();
+
+    // Функция для определения активного класса
+    const isActive = (path) => {
+        return router.pathname === path ? 'active' : '';
+    };
 
     return (
         <header className="bg-dark text-white py-2">
@@ -38,28 +45,56 @@ export default function Header() {
 
                     {/* Navigation items */}
                     <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`} id="navbarNav">
-                        <ul className="navbar-nav ms-auto">
+                        <ul className="navbar-nav ms-auto align-items-center">
                             <li className="nav-item">
-                                <Link href="/" className="nav-link active">
+                                <Link 
+                                    href="/" 
+                                    className={`nav-link ${isActive('/')}`}
+                                >
                                     Home
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link href="/projects" className="nav-link">
-                                    Projects
+                                <Link 
+                                    href="/about" 
+                                    className={`nav-link ${isActive('/about')}`}
+                                >
+                                    About
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link href="/templates" className="nav-link">
-                                    Templates
+                                <Link 
+                                    href="/blog" 
+                                    className={`nav-link ${isActive('/blog')}`}
+                                >
+                                    Blog
                                 </Link>
                             </li>
-                            <li className="nav-item">
-                                <Link href="/reports" className="nav-link">
-                                    Reports
+                            
+                            {/* Auth buttons */}
+                            <li className="nav-item ms-lg-3">
+                                <Link 
+                                    href="/login" 
+                                    className={`nav-link`}
+                                >
+                                    <button className="btn btn-outline-light btn-sm">
+                                        Log In
+                                    </button>
                                 </Link>
                             </li>
-                            <li className="nav-item dropdown">
+                            <li className="nav-item ms-2">
+                                <Link 
+                                    href="/register" 
+                                    className={`nav-link`}
+                                >
+                                    <button className="btn btn-primary btn-sm">
+                                        Register
+                                    </button>
+                                </Link>
+                            </li>
+
+                            {/* Settings dropdown - показывать только после авторизации */}
+                            {/* <li className="nav-item dropdown ms-lg-2">
                                 <a
                                     className="nav-link dropdown-toggle"
                                     href="#"
@@ -67,27 +102,36 @@ export default function Header() {
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                 >
-                                    Settings
+                                    <i className="fas fa-user-circle"></i>
                                 </a>
-                                <ul className="dropdown-menu dropdown-menu-dark">
+                                <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                                     <li>
-                                        <Link href="/profile" className="dropdown-item">
+                                        <Link 
+                                            href="/profile" 
+                                            className={`dropdown-item ${isActive('/profile')}`}
+                                        >
                                             Profile
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/preferences" className="dropdown-item">
+                                        <Link 
+                                            href="/preferences" 
+                                            className={`dropdown-item ${isActive('/preferences')}`}
+                                        >
                                             Preferences
                                         </Link>
                                     </li>
                                     <li><hr className="dropdown-divider" /></li>
                                     <li>
-                                        <Link href="/logout" className="dropdown-item">
+                                        <Link 
+                                            href="/logout" 
+                                            className="dropdown-item"
+                                        >
                                             Logout
                                         </Link>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                 </div>

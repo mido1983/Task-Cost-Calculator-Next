@@ -88,7 +88,7 @@ export default function Summary({ tasks, clientData, globalSettings }) {
         doc.save('Task_Cost_Summary.pdf');
     };
 
-    return (
+    return (   
         <div className="summary bg-light p-3 mt-4">
             <h4>Summary</h4>
             <p>Total Time for Paid Tasks: <span>{totalPaidTime.toFixed(2)}</span> hours</p>

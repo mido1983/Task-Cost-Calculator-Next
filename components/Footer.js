@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Footer() {
     const currentYear = new Date().getFullYear();
 
@@ -10,9 +12,15 @@ export default function Footer() {
                     </div>
                     <div className="col-md-6 text-md-end">
                         <p className="mb-0">
-                            <a href="#" className="text-white me-3">Terms of Service</a>
-                            <a href="#" className="text-white me-3">Privacy Policy</a>
-                            <a href="#" className="text-white">Contact</a>
+                            <Link href="/terms" className="text-white me-3">
+                                Terms of Service
+                            </Link>
+                            <Link href="/privacy" className="text-white me-3">
+                                Privacy Policy
+                            </Link>
+                            <Link href="/contact" className="text-white">
+                                Contact
+                            </Link>
                         </p>
                     </div>
                 </div>

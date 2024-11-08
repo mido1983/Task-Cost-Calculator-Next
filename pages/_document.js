@@ -12,6 +12,7 @@ export default function Document() {
                 <meta property="og:description" content="Task Cost Calculator is a convenient tool for calculating task and project costs." />
                 <meta property="og:image" content="/assets/images/preview.jpg" />
                 <meta property="og:url" content="http://taskcostcalculator.cloud/" />
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
                 <link rel="icon" href="/favicon.ico" />
                 {/* Google Tag Manager */}
                 <script async src="https://www.googletagmanager.com/gtag/js?id=G-CGRKBDWNLT"></script>
