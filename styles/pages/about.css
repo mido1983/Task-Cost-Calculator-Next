@@ -1,0 +1,49 @@
+.social-links a {
+    color: #6c757d;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #0d6efd;
+}
+
+.rounded-circle {
+    border: 3px solid #f8f9fa;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.btn-primary {
+    padding: 0.5rem 1.5rem;
+}
+
+.btn-outline-primary:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+}
+
+.fas.fa-check-circle {
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .lead {
+        font-size: 1.1rem;
+    }
+} 
