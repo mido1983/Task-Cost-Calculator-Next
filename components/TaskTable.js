@@ -12,6 +12,19 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
         setIsClient(true);
     }, []);
 
+    // Добавляем функцию для безопасного получения значения
+    const safeValue = (value, defaultValue = '') => {
+        return value === null || value === undefined ? defaultValue : value;
+    };
+
+    // Добавляем функцию для безопасного получения числового значения
+    const safeNumberValue = (value, defaultValue = 0) => {
+        if (value === null || value === undefined || isNaN(value)) {
+            return defaultValue;
+        }
+        return value;
+    };
+
     // Функция для расчета стоимости задачи
     const calculateTaskCost = (task) => {
         const timeInHours = parseFloat(task.timeHours) + parseFloat(task.timeMinutes) / 60 || 0;
@@ -61,9 +74,9 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
             description: '',
             timeHours: 0,
             timeMinutes: 0,
-            hourlyRate: globalSettings.hourlyRate || 0,
-            discount: globalSettings.globalDiscount || 0,
-            cost: 0,
+            hourlyRate: safeNumberValue(globalSettings.hourlyRate),
+            discount: safeNumberValue(globalSettings.globalDiscount),
+            cost: '0.00',
             free: false,
         };
         setTasks([...tasks, newTask]);
@@ -144,7 +157,7 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
                                 <input
                                     type="text"
                                     className="form-control"
-                                    value={task.description}
+                                    value={safeValue(task.description)}
                                     onChange={(e) => updateTask(index, 'description', e.target.value)}
                                     placeholder="Task description"
                                 />
@@ -155,8 +168,8 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
                                         type="number"
                                         className="form-control mr-2"
                                         style={{ width: '60px' }}
-                                        value={task.timeHours}
-                                        onChange={(e) => updateTask(index, 'timeHours', parseFloat(e.target.value))}
+                                        value={safeNumberValue(task.timeHours)}
+                                        onChange={(e) => updateTask(index, 'timeHours', parseFloat(e.target.value) || 0)}
                                         min="0"
                                         placeholder="Hrs"
                                     />
@@ -165,8 +178,8 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
                                         type="number"
                                         className="form-control ml-2"
                                         style={{ width: '60px' }}
-                                        value={task.timeMinutes}
-                                        onChange={(e) => updateTask(index, 'timeMinutes', parseFloat(e.target.value))}
+                                        value={safeNumberValue(task.timeMinutes)}
+                                        onChange={(e) => updateTask(index, 'timeMinutes', parseFloat(e.target.value) || 0)}
                                         min="0"
                                         max="60"
                                         placeholder="Min"
@@ -177,8 +190,8 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
                                 <input
                                     type="number"
                                     className="form-control"
-                                    value={task.hourlyRate}
-                                    onChange={(e) => updateTask(index, 'hourlyRate', parseFloat(e.target.value))}
+                                    value={safeNumberValue(task.hourlyRate)}
+                                    onChange={(e) => updateTask(index, 'hourlyRate', parseFloat(e.target.value) || 0)}
                                     placeholder="Hourly rate"
                                     min="0"
                                 />
@@ -187,20 +200,20 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
                                 <input
                                     type="number"
                                     className="form-control"
-                                    value={task.discount}
-                                    onChange={(e) => updateTask(index, 'discount', parseFloat(e.target.value))}
+                                    value={safeNumberValue(task.discount)}
+                                    onChange={(e) => updateTask(index, 'discount', parseFloat(e.target.value) || 0)}
                                     placeholder="Discount"
                                     min="0"
                                     max="100"
                                 />
                             </td>
                             <td>
-                                <span>${task.cost}</span>
+                                <span>${safeValue(task.cost, '0.00')}</span>
                             </td>
                             <td className="text-center">
                                 <input
                                     type="checkbox"
-                                    checked={task.free}
+                                    checked={!!task.free}
                                     onChange={(e) => updateTask(index, 'free', e.target.checked)}
                                 />
                             </td>

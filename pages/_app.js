@@ -52,6 +52,13 @@ export default function App({ Component, pageProps }) {
         if (clientData) localStorage.setItem('clientData', JSON.stringify(clientData));
     }, [clientData]);
 
+    useEffect(() => {
+        // Импортируем Bootstrap JS только на клиенте
+        if (typeof window !== 'undefined') {
+            require('bootstrap/dist/js/bootstrap.bundle.min.js');
+        }
+    }, []);
+
     return (
         <Component 
             {...pageProps} 
