@@ -31,7 +31,11 @@ export default function Home({
             </div>
 
             <TaskTable tasks={tasks} setTasks={setTasks} globalSettings={globalSettings} />
-            <Summary tasks={tasks} clientData={clientData} />
+            <Summary 
+                tasks={tasks} 
+                clientData={clientData} 
+                globalSettings={globalSettings}
+            />
         </Layout>
     );
 }
