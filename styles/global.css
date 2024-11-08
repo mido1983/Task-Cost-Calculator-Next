@@ -275,3 +275,30 @@ footer a:hover {
         transform: translateY(0);
     }
 }
+
+/* Navbar styles */
+.navbar .nav-link {
+    padding: 0.5rem 1rem;
+}
+
+.navbar .btn {
+    padding: 0.375rem 1rem;
+}
+
+/* Dropdown menu positioning */
+.dropdown-menu-end {
+    right: 0;
+    left: auto;
+}
+
+/* Mobile adjustments */
+@media (max-width: 991.98px) {
+    .navbar-nav .nav-item {
+        margin: 0.5rem 0;
+    }
+    
+    .navbar-nav .btn {
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+}

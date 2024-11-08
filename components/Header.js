@@ -38,10 +38,20 @@ export default function Header() {
 
                     {/* Navigation items */}
                     <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`} id="navbarNav">
-                        <ul className="navbar-nav ms-auto">
+                        <ul className="navbar-nav ms-auto align-items-center">
                             <li className="nav-item">
                                 <Link href="/" className="nav-link active">
                                     Home
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link href="/about" className="nav-link">
+                                    About
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link href="/blog" className="nav-link">
+                                    Blog
                                 </Link>
                             </li>
                             <li className="nav-item">
@@ -59,7 +69,25 @@ export default function Header() {
                                     Reports
                                 </Link>
                             </li>
-                            <li className="nav-item dropdown">
+                            
+                            {/* Auth buttons */}
+                            <li className="nav-item ms-lg-3">
+                                <Link href="/login" className="nav-link">
+                                    <button className="btn btn-outline-light btn-sm">
+                                        Log In
+                                    </button>
+                                </Link>
+                            </li>
+                            <li className="nav-item ms-2">
+                                <Link href="/register" className="nav-link">
+                                    <button className="btn btn-primary btn-sm">
+                                        Register
+                                    </button>
+                                </Link>
+                            </li>
+
+                            {/* Settings dropdown - показывать только после авторизации */}
+                            {/* <li className="nav-item dropdown ms-lg-2">
                                 <a
                                     className="nav-link dropdown-toggle"
                                     href="#"
@@ -67,9 +95,9 @@ export default function Header() {
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                 >
-                                    Settings
+                                    <i className="fas fa-user-circle"></i>
                                 </a>
-                                <ul className="dropdown-menu dropdown-menu-dark">
+                                <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                                     <li>
                                         <Link href="/profile" className="dropdown-item">
                                             Profile
@@ -87,7 +115,7 @@ export default function Header() {
                                         </Link>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                 </div>
