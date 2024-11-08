@@ -1,18 +1,9 @@
-
-
-
-
-
-
 .form-inline{
     display:flex;
     justify-content: center;
     align-items: center;
     vertical-align: center;
 }
-
-
-
 
 @media (max-width: 768px) {
     body {
@@ -133,5 +124,154 @@
 
     #taskTable tbody tr {
         padding: 8px;
+    }
+}
+
+/* Стили для header */
+header {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    font-weight: 300;
+}
+
+/* Стили для footer */
+footer {
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+}
+
+footer a {
+    text-decoration: none;
+    margin-left: 1rem;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Общие стили */
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    footer {
+        text-align: center;
+    }
+
+    footer .text-md-end {
+        text-align: center !important;
+        margin-top: 1rem;
+    }
+}
+
+/* Header styles */
+.navbar {
+    padding: 0.5rem 0;
+}
+
+.navbar-brand {
+    text-decoration: none;
+}
+
+.navbar-brand img {
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+    transform: scale(1.05);
+}
+
+.navbar-nav .nav-link {
+    position: relative;
+    padding: 0.5rem 1rem;
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
+    width: 80%;
+}
+
+.dropdown-menu {
+    margin-top: 0.5rem;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        padding: 1rem 0;
+    }
+
+    .navbar-nav .nav-link::after {
+        display: none;
+    }
+
+    .dropdown-menu {
+        border: none;
+        background: transparent;
+        padding: 0;
+        margin: 0;
+    }
+
+    .dropdown-item {
+        color: rgba(255, 255, 255, 0.8) !important;
+        padding: 0.5rem 1rem;
+    }
+
+    .dropdown-divider {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Animation for mobile menu */
+.navbar-collapse {
+    transition: all 0.3s ease;
+}
+
+.navbar-collapse.show {
+    animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

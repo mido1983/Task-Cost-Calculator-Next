@@ -1,7 +1,7 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
-export default function Summary({ tasks, clientData }) {
+export default function Summary({ tasks, clientData, globalSettings }) {
     // Подсчет общего времени и стоимости
     const totalPaidTime = tasks.reduce((acc, task) => {
         if (!task.free) {
@@ -17,6 +17,7 @@ export default function Summary({ tasks, clientData }) {
         return acc;
     }, 0);
 
+    // Расчет стоимости с учетом налога
     const totalGrossCost = tasks.reduce((acc, task) => {
         if (!task.free) {
             const timeInHours = parseFloat(task.timeHours) + parseFloat(task.timeMinutes) / 60 || 0;
@@ -35,7 +36,10 @@ export default function Summary({ tasks, clientData }) {
         return acc;
     }, 0);
 
-    const totalPayableAmount = totalGrossCost - totalDiscountValue;
+    const subtotal = totalGrossCost - totalDiscountValue;
+    const taxRate = parseFloat(globalSettings?.taxRate || 0);
+    const taxAmount = subtotal * (taxRate / 100);
+    const totalPayableAmount = subtotal + taxAmount;
 
     const exportPDF = () => {
         const doc = new jsPDF();
@@ -76,8 +80,10 @@ export default function Summary({ tasks, clientData }) {
         doc.text(`Total Free Time: ${totalFreeTime.toFixed(2)} hours`, 14, finalY + 15);
         doc.text(`Total Gross Cost: $${totalGrossCost.toFixed(2)}`, 14, finalY + 20);
         doc.text(`Total Discount: $${totalDiscountValue.toFixed(2)}`, 14, finalY + 25);
+        doc.text(`Subtotal: $${subtotal.toFixed(2)}`, 14, finalY + 30);
+        doc.text(`Tax (${taxRate}%): $${taxAmount.toFixed(2)}`, 14, finalY + 35);
         doc.setFont('helvetica', 'bold');
-        doc.text(`Total Payable Amount: $${totalPayableAmount.toFixed(2)}`, 14, finalY + 30);
+        doc.text(`Total Payable Amount: $${totalPayableAmount.toFixed(2)}`, 14, finalY + 40);
 
         doc.save('Task_Cost_Summary.pdf');
     };
@@ -89,7 +95,9 @@ export default function Summary({ tasks, clientData }) {
             <p>Total Time for Free Tasks: <span>{totalFreeTime.toFixed(2)}</span> hours</p>
             <p>Total Cost (before discounts): $<span>{totalGrossCost.toFixed(2)}</span></p>
             <p>Total Discount Given: $<span>{totalDiscountValue.toFixed(2)}</span></p>
-            <p>Total Payable Amount: $<span>{totalPayableAmount.toFixed(2)}</span></p>
+            <p>Subtotal: $<span>{subtotal.toFixed(2)}</span></p>
+            <p>Tax ({taxRate}%): $<span>{taxAmount.toFixed(2)}</span></p>
+            <p><strong>Total Payable Amount: $<span>{totalPayableAmount.toFixed(2)}</span></strong></p>
             <button className="btn btn-info mt-3" onClick={exportPDF}>
                 Export to PDF
             </button>
