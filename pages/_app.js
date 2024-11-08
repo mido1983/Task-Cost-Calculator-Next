@@ -1,5 +1,8 @@
+import WelcomePopup from '../components/WelcomePopup';
+import '../styles/components/WelcomePopup.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/global.css'; // Ваши глобальные стили, если есть
+import 'react-bootstrap/dist/react-bootstrap.min.js'; // Добавляем этот импорт
+import '../styles/global.css';
 import { useEffect, useState } from 'react';
 
 export default function App({ Component, pageProps }) {
@@ -60,14 +63,17 @@ export default function App({ Component, pageProps }) {
     }, []);
 
     return (
-        <Component 
-            {...pageProps} 
-            tasks={tasks}
-            setTasks={setTasks}
-            globalSettings={globalSettings}
-            setGlobalSettings={setGlobalSettings}
-            clientData={clientData}
-            setClientData={setClientData}
-        />
+        <>
+            <Component 
+                {...pageProps} 
+                tasks={tasks}
+                setTasks={setTasks}
+                globalSettings={globalSettings}
+                setGlobalSettings={setGlobalSettings}
+                clientData={clientData}
+                setClientData={setClientData}
+            />
+            <WelcomePopup />
+        </>
     );
 }
