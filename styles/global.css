@@ -1,18 +1,9 @@
-
-
-
-
-
-
 .form-inline{
     display:flex;
     justify-content: center;
     align-items: center;
     vertical-align: center;
 }
-
-
-
 
 @media (max-width: 768px) {
     body {
@@ -133,5 +124,53 @@
 
     #taskTable tbody tr {
         padding: 8px;
+    }
+}
+
+/* Стили для header */
+header {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    font-weight: 300;
+}
+
+/* Стили для footer */
+footer {
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+}
+
+footer a {
+    text-decoration: none;
+    margin-left: 1rem;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Общие стили */
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    footer {
+        text-align: center;
+    }
+
+    footer .text-md-end {
+        text-align: center !important;
+        margin-top: 1rem;
     }
 }

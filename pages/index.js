@@ -19,7 +19,6 @@ export default function Home({
                 <title>Task Cost Calculator</title>
                 <meta name="description" content="Task Cost Calculator for managing and summarizing project tasks." />
             </Head>
-            <h1 className="text-center mb-4">Task Cost Calculator</h1>
 
             <div className="row">
                 <div className="col-md-6 bg-light">
