@@ -1,9 +1,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Header() {
     const [isNavOpen, setIsNavOpen] = useState(false);
+    const router = useRouter();
+
+    // Функция для определения активного класса
+    const isActive = (path) => {
+        return router.pathname === path ? 'active' : '';
+    };
 
     return (
         <header className="bg-dark text-white py-2">
@@ -40,46 +47,46 @@ export default function Header() {
                     <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`} id="navbarNav">
                         <ul className="navbar-nav ms-auto align-items-center">
                             <li className="nav-item">
-                                <Link href="/" className="nav-link active">
+                                <Link 
+                                    href="/" 
+                                    className={`nav-link ${isActive('/')}`}
+                                >
                                     Home
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link href="/about" className="nav-link">
+                                <Link 
+                                    href="/about" 
+                                    className={`nav-link ${isActive('/about')}`}
+                                >
                                     About
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link href="/blog" className="nav-link">
+                                <Link 
+                                    href="/blog" 
+                                    className={`nav-link ${isActive('/blog')}`}
+                                >
                                     Blog
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link href="/projects" className="nav-link">
-                                    Projects
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link href="/templates" className="nav-link">
-                                    Templates
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link href="/reports" className="nav-link">
-                                    Reports
                                 </Link>
                             </li>
                             
                             {/* Auth buttons */}
                             <li className="nav-item ms-lg-3">
-                                <Link href="/login" className="nav-link">
+                                <Link 
+                                    href="/login" 
+                                    className={`nav-link`}
+                                >
                                     <button className="btn btn-outline-light btn-sm">
                                         Log In
                                     </button>
                                 </Link>
                             </li>
                             <li className="nav-item ms-2">
-                                <Link href="/register" className="nav-link">
+                                <Link 
+                                    href="/register" 
+                                    className={`nav-link`}
+                                >
                                     <button className="btn btn-primary btn-sm">
                                         Register
                                     </button>
@@ -99,18 +106,27 @@ export default function Header() {
                                 </a>
                                 <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                                     <li>
-                                        <Link href="/profile" className="dropdown-item">
+                                        <Link 
+                                            href="/profile" 
+                                            className={`dropdown-item ${isActive('/profile')}`}
+                                        >
                                             Profile
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/preferences" className="dropdown-item">
+                                        <Link 
+                                            href="/preferences" 
+                                            className={`dropdown-item ${isActive('/preferences')}`}
+                                        >
                                             Preferences
                                         </Link>
                                     </li>
                                     <li><hr className="dropdown-divider" /></li>
                                     <li>
-                                        <Link href="/logout" className="dropdown-item">
+                                        <Link 
+                                            href="/logout" 
+                                            className="dropdown-item"
+                                        >
                                             Logout
                                         </Link>
                                     </li>

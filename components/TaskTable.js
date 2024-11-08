@@ -115,8 +115,34 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
         return (
             <div>
                 <h2 className="mt-4">Tasks</h2>
+                <div className="table-responsive">
+                    <table className="table table-bordered table-striped" id="taskTable">
+                        <thead className="thead-dark d-none d-md-table-header-group">
+                            <tr>
+                                <th>Task Description</th>
+                                <th>Time (hours:minutes)</th>
+                                <th>Hourly Rate ($)</th>
+                                <th>Discount (%)</th>
+                                <th>Cost ($)</th>
+                                <th>Free Task</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {/* Пустая таблица для серверного рендеринга */}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            <h2 className="mt-4">Tasks</h2>
+            <div className="table-responsive">
                 <table className="table table-bordered table-striped" id="taskTable">
-                    <thead className="thead-dark">
+                    <thead className="thead-dark d-none d-md-table-header-group">
                         <tr>
                             <th>Task Description</th>
                             <th>Time (hours:minutes)</th>
@@ -128,114 +154,125 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {/* Пустая таблица для серверного рендеринга */}
+                        {tasks.map((task, index) => (
+                            <tr key={index} className="task-row">
+                                <td>
+                                    <div className="form-group">
+                                        <label className="d-md-none">Task Description</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={safeValue(task.description)}
+                                            onChange={(e) => updateTask(index, 'description', e.target.value)}
+                                            placeholder="Task description"
+                                            aria-label="Task description"
+                                        />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="form-group">
+                                        <label className="d-md-none">Time (hours:minutes)</label>
+                                        <div className="d-flex align-items-center">
+                                            <input
+                                                type="number"
+                                                className="form-control"
+                                                style={{ width: '60px' }}
+                                                value={safeNumberValue(task.timeHours)}
+                                                onChange={(e) => updateTask(index, 'timeHours', parseFloat(e.target.value) || 0)}
+                                                min="0"
+                                                placeholder="Hrs"
+                                                aria-label="Hours"
+                                            />
+                                            <span className="mx-2">:</span>
+                                            <input
+                                                type="number"
+                                                className="form-control"
+                                                style={{ width: '60px' }}
+                                                value={safeNumberValue(task.timeMinutes)}
+                                                onChange={(e) => updateTask(index, 'timeMinutes', parseFloat(e.target.value) || 0)}
+                                                min="0"
+                                                max="60"
+                                                placeholder="Min"
+                                                aria-label="Minutes"
+                                            />
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="form-group">
+                                        <label className="d-md-none">Hourly Rate ($)</label>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            value={safeNumberValue(task.hourlyRate)}
+                                            onChange={(e) => updateTask(index, 'hourlyRate', parseFloat(e.target.value) || 0)}
+                                            placeholder="Hourly rate"
+                                            min="0"
+                                            aria-label="Hourly rate"
+                                        />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="form-group">
+                                        <label className="d-md-none">Discount (%)</label>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            value={safeNumberValue(task.discount)}
+                                            onChange={(e) => updateTask(index, 'discount', parseFloat(e.target.value) || 0)}
+                                            placeholder="Discount"
+                                            min="0"
+                                            max="100"
+                                            aria-label="Discount percentage"
+                                        />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="form-group">
+                                        <label className="d-md-none">Cost ($)</label>
+                                        <span className="form-control-plaintext">
+                                            ${safeValue(task.cost, '0.00')}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="form-group">
+                                        <label className="d-md-none">Free Task</label>
+                                        <div className="form-check">
+                                            <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                checked={!!task.free}
+                                                onChange={(e) => updateTask(index, 'free', e.target.checked)}
+                                                aria-label="Free task"
+                                            />
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="btn-group" role="group" aria-label="Task actions">
+                                        <button
+                                            className="btn btn-danger btn-sm"
+                                            onClick={() => deleteTask(index)}
+                                            aria-label="Delete task"
+                                        >
+                                            Delete
+                                        </button>
+                                        <button
+                                            className="btn btn-secondary btn-sm ms-2"
+                                            onClick={() => duplicateTask(index)}
+                                            aria-label="Duplicate task"
+                                        >
+                                            Duplicate
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
-        );
-    }
-
-    return (
-        <div>
-            <h2 className="mt-4">Tasks</h2>
-            <table className="table table-bordered table-striped" id="taskTable">
-                <thead className="thead-dark">
-                    <tr>
-                        <th>Task Description</th>
-                        <th>Time (hours:minutes)</th>
-                        <th>Hourly Rate ($)</th>
-                        <th>Discount (%)</th>
-                        <th>Cost ($)</th>
-                        <th>Free Task</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tasks.map((task, index) => (
-                        <tr key={index}>
-                            <td>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={safeValue(task.description)}
-                                    onChange={(e) => updateTask(index, 'description', e.target.value)}
-                                    placeholder="Task description"
-                                />
-                            </td>
-                            <td>
-                                <div className="form-inline">
-                                    <input
-                                        type="number"
-                                        className="form-control mr-2"
-                                        style={{ width: '60px' }}
-                                        value={safeNumberValue(task.timeHours)}
-                                        onChange={(e) => updateTask(index, 'timeHours', parseFloat(e.target.value) || 0)}
-                                        min="0"
-                                        placeholder="Hrs"
-                                    />
-                                    <span>:</span>
-                                    <input
-                                        type="number"
-                                        className="form-control ml-2"
-                                        style={{ width: '60px' }}
-                                        value={safeNumberValue(task.timeMinutes)}
-                                        onChange={(e) => updateTask(index, 'timeMinutes', parseFloat(e.target.value) || 0)}
-                                        min="0"
-                                        max="60"
-                                        placeholder="Min"
-                                    />
-                                </div>
-                            </td>
-                            <td>
-                                <input
-                                    type="number"
-                                    className="form-control"
-                                    value={safeNumberValue(task.hourlyRate)}
-                                    onChange={(e) => updateTask(index, 'hourlyRate', parseFloat(e.target.value) || 0)}
-                                    placeholder="Hourly rate"
-                                    min="0"
-                                />
-                            </td>
-                            <td>
-                                <input
-                                    type="number"
-                                    className="form-control"
-                                    value={safeNumberValue(task.discount)}
-                                    onChange={(e) => updateTask(index, 'discount', parseFloat(e.target.value) || 0)}
-                                    placeholder="Discount"
-                                    min="0"
-                                    max="100"
-                                />
-                            </td>
-                            <td>
-                                <span>${safeValue(task.cost, '0.00')}</span>
-                            </td>
-                            <td className="text-center">
-                                <input
-                                    type="checkbox"
-                                    checked={!!task.free}
-                                    onChange={(e) => updateTask(index, 'free', e.target.checked)}
-                                />
-                            </td>
-                            <td>
-                                <button
-                                    className="btn btn-danger btn-sm mr-2"
-                                    onClick={() => deleteTask(index)}
-                                >
-                                    Delete
-                                </button>
-                                <button
-                                    className="btn btn-secondary btn-sm"
-                                    onClick={() => duplicateTask(index)}
-                                >
-                                    Duplicate
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <div className="text-right mb-3">
+            <div className="text-end mb-3">
                 <button className="btn btn-primary" onClick={addTask}>
                     Add Task
                 </button>
