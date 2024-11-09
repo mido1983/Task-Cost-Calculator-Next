@@ -45,6 +45,7 @@ export default function WelcomePopup() {
                     <p>
                         Get started by adding your first task using the "Add Task" button.
                     </p>
+                    <p>Email: taskcostcalculator@proton.me </p>
                 </div>
             </Modal.Body>
             <Modal.Footer>
