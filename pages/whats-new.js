@@ -2,7 +2,22 @@ import Head from 'next/head';
 import Layout from '../components/Layout';
 
 export default function WhatsNew() {
+
     const updates = [
+        {
+            date: '10 November 2024',
+            title: 'Contact Features Update',
+            features: [
+                ' - Added WhatsNew page to track project updates',
+                '- Implemented chronological display of features and changes',
+                '- Added three main update sections:',
+                    '* Contact Features Update',
+                    '* UI and Structure Improvements',
+                    '* Initial Release',
+                '- Maintained consistent styling with existing pages',
+                '- Used Bootstrap card layout for updates display'
+            ]
+        },
         {
             date: '10 November 2024',
             title: 'Contact Features Update',
