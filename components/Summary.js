@@ -54,6 +54,18 @@ export default function Summary({ tasks, clientData, globalSettings }) {
     const currencySymbol = getCurrencySymbol(globalSettings.currency);
 
     const exportPDF = () => {
+        if (typeof window !== 'undefined' && window.gtag) {
+            window.gtag('event', 'export_pdf', {
+                'event_category': 'Document',
+                'event_label': 'Export PDF',
+                'value': tasks.length,
+                'currency': globalSettings.currency,
+                'total_amount': totalPayableAmount,
+                'tasks_count': tasks.length,
+                'has_free_tasks': tasks.some(task => task.free),
+                'total_time': totalPaidTime + totalFreeTime
+            });
+        }
         const doc = new jsPDF();
 
         // Заголовок
