@@ -70,7 +70,22 @@ export default function Header() {
                                     Blog
                                 </Link>
                             </li>
-                            
+                            <li className="nav-item">
+                                <Link 
+                                    href="/whats-new" 
+                                    className={`nav-link ${isActive('/whats-new')}`}
+                                >
+                                    What's New?
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link 
+                                    href="/contact" 
+                                    className={`nav-link ${isActive('/contact')}`}
+                                >
+                                    Contact
+                                </Link>
+                            </li>
                             {/* Auth buttons */}
                             <li className="nav-item ms-lg-3">
                                 <Link 

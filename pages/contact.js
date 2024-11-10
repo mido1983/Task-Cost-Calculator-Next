@@ -120,12 +120,13 @@ export default function Contact() {
                     <div className="col-md-6">
                         <div className="card">
                             <div className="card-body">
-                                <h2 className="h4">Other Ways to Reach Us</h2>
-                                <p><strong>Email:</strong> taskcostcalculator@proton.me</p>
+                                <h2 className="h4">Old School</h2>
+                                <p>Who needs flashy when you’ve got solid? We do things the old-school <br /> way — straight to the point, no fluff.</p>
+                                <p><strong>Just send me an e-mail:  </strong> <email>taskcostcalculator@proton.me</email> </p>
                                 {/* <p><strong>Hours:</strong> Monday - Friday, 9:00 AM - 5:00 PM EST</p> */}
                                 {/* <div className="mt-4">
                                     <h3 className="h5">Follow Us</h3>
-                                    <div className="social-links mt-2">
+                                    <div className="social-links mt-2"> 
                                         <a href="#" className="me-3">
                                             <i className="fab fa-twitter fa-lg"></i>
                                         </a>
