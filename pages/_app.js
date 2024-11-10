@@ -3,7 +3,9 @@ import '../styles/components/WelcomePopup.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap/dist/react-bootstrap.min.js'; // Добавляем этот импорт
 import '../styles/global.css';
+
 import { useEffect, useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 export default function App({ Component, pageProps }) {
     const [tasks, setTasks] = useState([]);
@@ -61,6 +63,13 @@ export default function App({ Component, pageProps }) {
             require('bootstrap/dist/js/bootstrap.bundle.min.js');
         }
     }, []);
+
+    // EmailJS
+    useEffect(() => {
+        emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+    }, []);
+
+    
 
     return (
         <>

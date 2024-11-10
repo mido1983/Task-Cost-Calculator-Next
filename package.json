@@ -8,13 +8,12 @@
     "start": "next start",
     "export": "next export"
   },
-
-
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "bootstrap": "^5.3.3",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
