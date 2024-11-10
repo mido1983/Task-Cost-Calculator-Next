@@ -6,6 +6,16 @@ export default function WhatsNew() {
     const updates = [
         {
             date: '10 November 2024',
+            title: 'Small updates',
+            features: [
+                'Added new blog post about tax calculations',
+                'Fixed date formatting issue',
+                'Implemented article layout and styling',
+                'Added navigation back to blog list'
+            ]
+        },
+        {
+            date: '10 November 2024',
             title: 'Contact Features Update',
             features: [
                 ' - Added WhatsNew page to track project updates',

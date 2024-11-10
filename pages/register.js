@@ -39,6 +39,7 @@ export default function Register() {
             <div className="container py-5">
                 <div className="row justify-content-center">
                     <div className="col-md-6 col-lg-4">
+                        <h3 className="h4 text-center mb-4 text-warning">User registration is under development</h3>
                         <div className="card">
                             <div className="card-body">
                                 <h1 className="h4 text-center mb-4">Create Account</h1>
