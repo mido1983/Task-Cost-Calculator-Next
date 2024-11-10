@@ -4,6 +4,14 @@ import Layout from '../components/Layout';
 export default function WhatsNew() {
 
     const updates = [
+
+    {
+        date: '10 November 2024',
+            title: 'Currency switcher',
+            features: [
+            'Added currency selection switch'
+        ]
+    },
         {
             date: '10 November 2024',
             title: 'Small updates',
