@@ -5,6 +5,7 @@ import Summary from '../components/Summary';
 import GlobalSettings from '../components/GlobalSettings';
 import ClientForm from '../components/ClientForm';
 
+
 export default function Home({ 
     tasks, 
     setTasks, 

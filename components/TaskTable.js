@@ -2,17 +2,13 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 
 export default function TaskTable({ tasks, setTasks, globalSettings }) {
-    // Добавляем состояние для отслеживания готовности к рендерингу
     const [isClient, setIsClient] = useState(false);
-    // Добавляем состояние для хранения предыдущих глобальных настроек
     const [prevSettings, setPrevSettings] = useState(globalSettings);
 
-    // Устанавливаем флаг клиентского рендеринга
     useEffect(() => {
         setIsClient(true);
     }, []);
 
-    // Добавляем функцию для безопасного получения значения
     const safeValue = (value, defaultValue = '') => {
         return value === null || value === undefined ? defaultValue : value;
     };
@@ -110,6 +106,16 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
         setTasks(updatedTasks);
     };
 
+    const getCurrencySymbol = (currencyCode) => {
+        const currencies = {
+            'USD': '$',
+            'EUR': '€',
+            'GBP': '£',
+            'NIS': '₪'
+        };
+        return currencies[currencyCode] || '$';
+    };
+
     // Модифицируем рендер с учетом проверки на клиентский рендеринг
     if (!isClient) {
         return (
@@ -121,9 +127,9 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
                             <tr>
                                 <th>Task Description</th>
                                 <th>Time (hours:minutes)</th>
-                                <th>Hourly Rate ($)</th>
+                                <th>Hourly Rate ({getCurrencySymbol(globalSettings.currency)})</th>
                                 <th>Discount (%)</th>
-                                <th>Cost ($)</th>
+                                <th>Cost ({getCurrencySymbol(globalSettings.currency)})</th>
                                 <th>Free Task</th>
                                 <th>Actions</th>
                             </tr>
@@ -146,9 +152,9 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
                         <tr>
                             <th>Task Description</th>
                             <th>Time (hours:minutes)</th>
-                            <th>Hourly Rate ($)</th>
+                            <th>Hourly Rate ({getCurrencySymbol(globalSettings.currency)})</th>
                             <th>Discount (%)</th>
-                            <th>Cost ($)</th>
+                            <th>Cost ({getCurrencySymbol(globalSettings.currency)})</th>
                             <th>Free Task</th>
                             <th>Actions</th>
                         </tr>
@@ -200,7 +206,7 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
                                 </td>
                                 <td>
                                     <div className="form-group">
-                                        <label className="d-md-none">Hourly Rate ($)</label>
+                                        <label className="d-md-none">Hourly Rate ({getCurrencySymbol(globalSettings.currency)})</label>
                                         <input
                                             type="number"
                                             className="form-control"
@@ -229,9 +235,9 @@ export default function TaskTable({ tasks, setTasks, globalSettings }) {
                                 </td>
                                 <td>
                                     <div className="form-group">
-                                        <label className="d-md-none">Cost ($)</label>
+                                        <label className="d-md-none">Cost ({getCurrencySymbol(globalSettings.currency)})</label>
                                         <span className="form-control-plaintext">
-                                            ${safeValue(task.cost, '0.00')}
+                                            {getCurrencySymbol(globalSettings.currency)}{safeValue(task.cost, '0.00')}
                                         </span>
                                     </div>
                                 </td>

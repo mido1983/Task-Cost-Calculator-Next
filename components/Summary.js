@@ -41,6 +41,18 @@ export default function Summary({ tasks, clientData, globalSettings }) {
     const taxAmount = subtotal * (taxRate / 100);
     const totalPayableAmount = subtotal + taxAmount;
 
+    const getCurrencySymbol = (currencyCode) => {
+        const currencies = {
+            'USD': '$',
+            'EUR': '€',
+            'GBP': '£',
+            'NIS': '₪'
+        };
+        return currencies[currencyCode] || '$';
+    };
+
+    const currencySymbol = getCurrencySymbol(globalSettings.currency);
+
     const exportPDF = () => {
         const doc = new jsPDF();
 
@@ -78,12 +90,12 @@ export default function Summary({ tasks, clientData, globalSettings }) {
         doc.text('Summary:', 14, finalY);
         doc.text(`Total Paid Time: ${totalPaidTime.toFixed(2)} hours`, 14, finalY + 10);
         doc.text(`Total Free Time: ${totalFreeTime.toFixed(2)} hours`, 14, finalY + 15);
-        doc.text(`Total Gross Cost: $${totalGrossCost.toFixed(2)}`, 14, finalY + 20);
-        doc.text(`Total Discount: $${totalDiscountValue.toFixed(2)}`, 14, finalY + 25);
-        doc.text(`Subtotal: $${subtotal.toFixed(2)}`, 14, finalY + 30);
-        doc.text(`Tax (${taxRate}%): $${taxAmount.toFixed(2)}`, 14, finalY + 35);
+        doc.text(`Total Gross Cost: ${currencySymbol}${totalGrossCost.toFixed(2)}`, 14, finalY + 20);
+        doc.text(`Total Discount: ${currencySymbol}${totalDiscountValue.toFixed(2)}`, 14, finalY + 25);
+        doc.text(`Subtotal: ${currencySymbol}${subtotal.toFixed(2)}`, 14, finalY + 30);
+        doc.text(`Tax (${taxRate}%): ${currencySymbol}${taxAmount.toFixed(2)}`, 14, finalY + 35);
         doc.setFont('helvetica', 'bold');
-        doc.text(`Total Payable Amount: $${totalPayableAmount.toFixed(2)}`, 14, finalY + 40);
+        doc.text(`Total Payable Amount: ${currencySymbol}${totalPayableAmount.toFixed(2)}`, 14, finalY + 40);
 
         doc.save('Task_Cost_Summary.pdf');
     };
@@ -93,11 +105,11 @@ export default function Summary({ tasks, clientData, globalSettings }) {
             <h4>Summary</h4>
             <p>Total Time for Paid Tasks: <span>{totalPaidTime.toFixed(2)}</span> hours</p>
             <p>Total Time for Free Tasks: <span>{totalFreeTime.toFixed(2)}</span> hours</p>
-            <p>Total Cost (before discounts): $<span>{totalGrossCost.toFixed(2)}</span></p>
-            <p>Total Discount Given: $<span>{totalDiscountValue.toFixed(2)}</span></p>
-            <p>Subtotal: $<span>{subtotal.toFixed(2)}</span></p>
-            <p>Tax ({taxRate}%): $<span>{taxAmount.toFixed(2)}</span></p>
-            <p><strong>Total Payable Amount: $<span>{totalPayableAmount.toFixed(2)}</span></strong></p>
+            <p>Total Cost (before discounts): {currencySymbol}<span>{totalGrossCost.toFixed(2)}</span></p>
+            <p>Total Discount Given: {currencySymbol}<span>{totalDiscountValue.toFixed(2)}</span></p>
+            <p>Subtotal: {currencySymbol}<span>{subtotal.toFixed(2)}</span></p>
+            <p>Tax ({taxRate}%): {currencySymbol}<span>{taxAmount.toFixed(2)}</span></p>
+            <p><strong>Total Payable Amount: {currencySymbol}<span>{totalPayableAmount.toFixed(2)}</span></strong></p>
             <button className="btn btn-info mt-3" onClick={exportPDF}>
                 Export to PDF
             </button>

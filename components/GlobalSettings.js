@@ -1,6 +1,13 @@
 import { useEffect } from 'react';
 
 export default function GlobalSettings({ globalSettings, setGlobalSettings }) {
+    const currencies = [
+        { code: 'USD', symbol: '$' },
+        { code: 'EUR', symbol: '€' },
+        { code: 'GBP', symbol: '£' },
+        { code: 'NIS', symbol: '₪' }
+    ];
+
     const updateSettings = (field, value) => {
         setGlobalSettings(prev => ({ ...prev, [field]: value }));
     };
@@ -16,8 +23,24 @@ export default function GlobalSettings({ globalSettings, setGlobalSettings }) {
         <div className="card p-3 mb-4">
             <h2 className="card-title">Global Settings</h2>
             <form>
+                <div className="form-group mb-3">
+                    <label htmlFor="currency">Currency:</label>
+                    <select
+                        className="form-select"
+                        id="currency"
+                        value={globalSettings.currency || 'USD'}
+                        onChange={(e) => updateSettings('currency', e.target.value)}
+                    >
+                        {currencies.map(curr => (
+                            <option key={curr.code} value={curr.code}>
+                                {curr.code} ({curr.symbol})
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
                 <div className="form-group">
-                    <label htmlFor="hourlyRate">Default Hourly Rate ($):</label>
+                    <label htmlFor="hourlyRate">Default Hourly Rate ({currencies.find(c => c.code === (globalSettings.currency || 'USD'))?.symbol}):</label>
                     <input
                         type="number"
                         className="form-control"
