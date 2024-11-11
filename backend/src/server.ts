@@ -1,39 +1,49 @@
 import express from 'express';
-import cors from 'cors';
 import { connectDB } from './config/database';
-import { errorHandler } from './middleware/error';
 import config from './config/config';
-
-// Routes will be imported here
-import authRoutes from './routes/auth';
-import taskRoutes from './routes/tasks';
-import settingsRoutes from './routes/settings';
-import clientRoutes from './routes/clients';
+import { User } from './models/User';
 
 const app = express();
 
-// Connect to MongoDB
-connectDB();
-
-// Middleware
-app.use(cors());
+// Middleware для парсинга JSON
 app.use(express.json());
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/tasks', taskRoutes);
-app.use('/api/settings', settingsRoutes);
-app.use('/api/clients', clientRoutes);
-
-// Error handling
-app.use(errorHandler);
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err: Error) => {
-    console.error('Unhandled Rejection:', err);
-    process.exit(1);
+// Тестовые маршруты
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Добро пожаловать в API Task Cost Calculator!',
+    status: 'работает'
+  });
 });
 
-app.listen(config.port, () => {
-    console.log(`Server running on port ${config.port}`);
-}); 
+// Обновленный тестовый маршрут
+app.get('/api/test', async (req, res) => {
+  try {
+    const users = await User.find().select('-password');
+    res.json({
+      success: true,
+      count: users.length,
+      users
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Ошибка при получении пользователей',
+      error: error.message
+    });
+  }
+});
+
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(config.port, () => {
+      console.log(`✅ Сервер запущен на порту ${config.port}`);
+    });
+  } catch (error) {
+    console.error('Ошибка запуска сервера:', error);
+    process.exit(1);
+  }
+};
+
+startServer(); 
