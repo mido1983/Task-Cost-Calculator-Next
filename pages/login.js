@@ -15,12 +15,27 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Здесь будет логика авторизации
-            console.log('Login attempt:', formData);
-            // После успешной авторизации
-            router.push('/');
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await res.json();
+            
+            if (res.ok) {
+                // Сохраняем токен и данные пользователя
+                localStorage.setItem('token', data.data.token);
+                localStorage.setItem('user', JSON.stringify(data.data.user));
+                router.push('/dashboard');  // Изменено с '/' на '/dashboard'
+
+            } else {
+                setError(data.message || 'Ошибка при входе');
+            }
         } catch (err) {
-            setError('Invalid email or password');
+            setError('Произошла ошибка при подключении к серверу');
         }
     };
 

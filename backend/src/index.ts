@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { connectDB } from '../src/config/database';
+import { connectDB } from './config/database';
 import authRoutes from './routes/auth';
 import { User } from './models/User';
 
@@ -21,7 +21,7 @@ app.use(express.json());
 
 app.get('/', async (req, res) => {
     try {
-        const users = await User.find({}, { password: 0 }); // Исключаем пароль из результата
+        const users = await User.find({}); // Исключаем пароль из результата
         res.json({
             message: 'Список всех пользователей',
             users

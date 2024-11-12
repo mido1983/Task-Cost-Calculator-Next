@@ -1,11 +1,28 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 export default function Header() {
     const [isNavOpen, setIsNavOpen] = useState(false);
+    const [user, setUser] = useState(null);
     const router = useRouter();
+
+    useEffect(() => {
+        // Проверяем наличие токена в localStorage
+        const token = localStorage.getItem('token');
+        const userData = localStorage.getItem('user');
+        if (token && userData) {
+            setUser(JSON.parse(userData));
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setUser(null);
+        router.push('/login');
+    };
 
     // Функция для определения активного класса
     const isActive = (path) => {
@@ -87,26 +104,38 @@ export default function Header() {
                                 </Link>
                             </li>
                             {/* Auth buttons */}
-                            <li className="nav-item ms-lg-3">
-                                <Link 
-                                    href="/login" 
-                                    className={`nav-link`}
-                                >
-                                    <button className="btn btn-outline-light btn-sm">
-                                        Log In
-                                    </button>
-                                </Link>
-                            </li>
-                            <li className="nav-item ms-2">
-                                <Link 
-                                    href="/register" 
-                                    className={`nav-link`}
-                                >
-                                    <button className="btn btn-primary btn-sm">
-                                        Register
-                                    </button>
-                                </Link>
-                            </li>
+                            {user ? (
+                                <>
+                                    <li className="nav-item">
+                                        <span className="nav-link">Hello, {user.name}!</span>
+                                    </li>
+                                    <li className="nav-item ms-2">
+                                        <button 
+                                            onClick={handleLogout}
+                                            className="btn btn-outline-light btn-sm"
+                                        >
+                                            Log Out
+                                        </button>
+                                    </li>
+                                </>
+                            ) : (
+                                <>
+                                    <li className="nav-item ms-lg-3">
+                                        <Link href="/login" className="nav-link">
+                                            <button className="btn btn-outline-light btn-sm">
+                                                Log In
+                                            </button>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item ms-2">
+                                        <Link href="/register" className="nav-link">
+                                            <button className="btn btn-primary btn-sm">
+                                                Register
+                                            </button>
+                                        </Link>
+                                    </li>
+                                </>
+                            )}
 
                             {/* Settings dropdown - показывать только после авторизации */}
                             {/* <li className="nav-item dropdown ms-lg-2">
