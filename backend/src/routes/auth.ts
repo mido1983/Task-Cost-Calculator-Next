@@ -120,7 +120,8 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
                 user: {
                     id: user._id,
                     name: user.name,
-                    email: user.email
+                    email: user.email,
+                    role: user.role
                 }
             }
         });

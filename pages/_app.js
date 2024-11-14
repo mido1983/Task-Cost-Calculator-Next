@@ -1,5 +1,7 @@
 import WelcomePopup from '../components/WelcomePopup';
 import '../styles/components/WelcomePopup.css';
+import { SessionProvider } from 'next-auth/react';
+import '../styles/pages/dashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap/dist/react-bootstrap.min.js'; // Добавляем этот импорт
 import '../styles/global.css';
@@ -7,7 +9,7 @@ import '../styles/global.css';
 import { useEffect, useState } from 'react';
 import emailjs from '@emailjs/browser';
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps: { session, ...pageProps }}) {
     const [tasks, setTasks] = useState([]);
     const [globalSettings, setGlobalSettings] = useState({
         hourlyRate: 0,
@@ -73,6 +75,7 @@ export default function App({ Component, pageProps }) {
 
     return (
         <>
+            <SessionProvider session={session}>
             <Component 
                 {...pageProps} 
                 tasks={tasks}
@@ -83,6 +86,7 @@ export default function App({ Component, pageProps }) {
                 setClientData={setClientData}
             />
             <WelcomePopup />
+            </SessionProvider>
         </>
     );
 }

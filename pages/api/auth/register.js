@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     try {
         await connectDB();
         
-        const { name, email, password } = req.body;
+        const { name, email, password, planType } = req.body;
 
         // Basic validation
         if (!email || !password || !name) {
@@ -43,7 +43,15 @@ export default async function handler(req, res) {
         const user = await User.create({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            planType,
+            role: 'user',
+            trialEndsAt: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
+            subscriptionStartDate: new Date(),
+            subscriptionEndDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
+            paymentInfo: {
+                paymentStatus: 'pending'
+            }
         });
 
         res.status(201).json({

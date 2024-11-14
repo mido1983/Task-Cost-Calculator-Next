@@ -6,11 +6,14 @@ import { useRouter } from 'next/router';
 
 export default function Register() {
     const router = useRouter();
+    const { plan } = router.query;
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        planType: plan || 'paid-5'
     });
     const [error, setError] = useState('');
 
@@ -29,7 +32,8 @@ export default function Register() {
                 body: JSON.stringify({
                     name: formData.name,
                     email: formData.email,
-                    password: formData.password
+                    password: formData.password,
+                    planType: formData.planType
                 })
             });
 
@@ -105,6 +109,11 @@ export default function Register() {
                                             required
                                         />
                                     </div>
+                                    <input
+                                        type="hidden"
+                                        name="planType"
+                                        value={formData.planType}
+                                    />
                                     <button type="submit" className="btn btn-primary w-100">
                                         Register
                                     </button>

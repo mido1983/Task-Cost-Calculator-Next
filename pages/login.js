@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Layout from '../components/Layout';
 import Link from 'next/link';
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
 export default function Login() {
@@ -15,24 +16,16 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
+            const result = await signIn('credentials', {
+                redirect: false,
+                email: formData.email,
+                password: formData.password,
             });
 
-            const data = await res.json();
-            
-            if (res.ok) {
-                // Сохраняем токен и данные пользователя
-                localStorage.setItem('token', data.data.token);
-                localStorage.setItem('user', JSON.stringify(data.data.user));
-                router.push('/dashboard');  // Изменено с '/' на '/dashboard'
-
+            if (result.error) {
+                setError(result.error);
             } else {
-                setError(data.message || 'Ошибка при входе');
+                router.push('/dashboard');
             }
         } catch (err) {
             setError('Произошла ошибка при подключении к серверу');

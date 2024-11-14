@@ -2,25 +2,24 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function Header() {
     const [isNavOpen, setIsNavOpen] = useState(false);
-    const [user, setUser] = useState(null);
     const router = useRouter();
+    const [dateTime, setDateTime] = useState(new Date());
+    const { data: session, status } = useSession();
 
     useEffect(() => {
-        // Проверяем наличие токена в localStorage
-        const token = localStorage.getItem('token');
-        const userData = localStorage.getItem('user');
-        if (token && userData) {
-            setUser(JSON.parse(userData));
-        }
+        const interval = setInterval(() => {
+            setDateTime(new Date());
+        }, 1000);
+
+        return () => clearInterval(interval);
     }, []);
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        setUser(null);
+    const handleLogout = async () => {
+        await signOut({ redirect: false });
         router.push('/login');
     };
 
@@ -30,8 +29,8 @@ export default function Header() {
     };
 
     return (
-        <header className="bg-dark text-white py-2">
-            <nav className="navbar navbar-expand-lg navbar-dark">
+        <header className="bg-white text-gray-700 py-2 sticky-top shadow-sm">
+            <nav className="navbar navbar-expand-lg navbar-light">
                 <div className="container">
                     {/* Logo */}
                     <Link href="/" className="navbar-brand d-flex align-items-center">
@@ -42,144 +41,102 @@ export default function Header() {
                             height={40}
                             className="me-2"
                         />
-                        <div>
-                            <h1 className="h4 mb-0">Task Cost Calculator</h1>
-                            <p className="small mb-0 text-light">Calculate and manage your project costs</p>
-                        </div>
                     </Link>
 
-                    {/* Hamburger button for mobile */}
-                    <button
-                        className="navbar-toggler"
-                        type="button"
-                        onClick={() => setIsNavOpen(!isNavOpen)}
-                        aria-controls="navbarNav"
-                        aria-expanded={isNavOpen}
-                        aria-label="Toggle navigation"
-                    >
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
+                    {session ? (
+                        <div className="welcome-content-dashboard">
+                            Hello, {session.user.name}!<br/>
+                            <div>{dateTime.toLocaleDateString()} <span className={'dashboardTimeLV'}> {new Date().toLocaleTimeString('en-GB')} </span></div>
+                        </div>
+                    ) : (
+                        <div>
+                            <h1 className="h4 mb-0">Task Cost Calculator</h1>
+                            <p className="small mb-0 text-gray-500">Calculate and manage your project costs</p>
+                        </div>
+                    )}
 
-                    {/* Navigation items */}
-                    <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`} id="navbarNav">
-                        <ul className="navbar-nav ms-auto align-items-center">
-                            <li className="nav-item">
-                                <Link 
-                                    href="/" 
-                                    className={`nav-link ${isActive('/')}`}
-                                >
-                                    Home
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link 
-                                    href="/about" 
-                                    className={`nav-link ${isActive('/about')}`}
-                                >
-                                    About
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link 
-                                    href="/blog" 
-                                    className={`nav-link ${isActive('/blog')}`}
-                                >
-                                    Blog
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link 
-                                    href="/whats-new" 
-                                    className={`nav-link ${isActive('/whats-new')}`}
-                                >
-                                    What's New?
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link 
-                                    href="/contact" 
-                                    className={`nav-link ${isActive('/contact')}`}
-                                >
-                                    Contact
-                                </Link>
-                            </li>
-                            {/* Auth buttons */}
-                            {user ? (
-                                <>
+                    {/* Show different menus based on auth state */}    
+                    {session ? (
+                        // Logged in - show dropdown menu
+                        <div className="dropdown ms-auto">
+                            <button 
+                                className="btn dropdown-toggle d-flex align-items-center" 
+                                type="button" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false"
+                            >
+                                <span className="me-2">RAINBOW PROJECTS</span>
+                            </button>
+                            <ul className="dropdown-menu dropdown-menu-end">
+                                <li className="dropdown-header">Company: rainbowProjects</li>
+                                <li><hr className="dropdown-divider"/></li>
+                                <li><Link href="/company/details" className="dropdown-item">Company Details</Link></li>
+                                <li><Link href="/billing/history" className="dropdown-item">Billing History</Link></li>
+                                <li><hr className="dropdown-divider"/></li>
+                                <li className="dropdown-header">User: {session.user.email}</li>
+                                <li><Link href="/profile" className="dropdown-item">My Profile</Link></li>
+                                <li><Link href="/change-password" className="dropdown-item">Change password</Link></li>
+                                <li><hr className="dropdown-divider"/></li>
+                                <li><button onClick={handleLogout} className="dropdown-item">Logout</button></li>
+                                <li><hr className="dropdown-divider"/></li>
+                                <li><Link href="/language/hebrew" className="dropdown-item">English</Link></li>
+                            </ul>
+                        </div>
+                    ) : (
+                        // Not logged in - show regular menu
+                        <>
+                            <button
+                                className="navbar-toggler"
+                                type="button"
+                                onClick={() => setIsNavOpen(!isNavOpen)}
+                                aria-controls="navbarNav"
+                                aria-expanded={isNavOpen}
+                                aria-label="Toggle navigation"
+                            >
+                                <span className="navbar-toggler-icon"></span>
+                            </button>
+
+                            <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`} id="navbarNav">
+                                <ul className="navbar-nav ms-auto align-items-center">
                                     <li className="nav-item">
-                                        <span className="nav-link">Hello, {user.name}!</span>
+                                        <Link href="/" className={`nav-link ${isActive('/')}`}>Home</Link>
                                     </li>
-                                    <li className="nav-item ms-2">
-                                        <button 
-                                            onClick={handleLogout}
-                                            className="btn btn-outline-light btn-sm"
-                                        >
-                                            Log Out
-                                        </button>
+                                    {!session && (
+                                        <li className="nav-item ms-2">
+                                            <Link href="/plans" className="nav-link">
+                                                Subscription Plans
+                                            </Link>
+                                        </li>
+                                    )}
+                                    <li className="nav-item">
+                                        <Link href="/about" className={`nav-link ${isActive('/about')}`}>About</Link>
                                     </li>
-                                </>
-                            ) : (
-                                <>
+                                    <li className="nav-item">
+                                        <Link href="/blog" className={`nav-link ${isActive('/blog')}`}>Blog</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/whats-new" className={`nav-link ${isActive('/whats-new')}`}>What's New?</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/contact" className={`nav-link ${isActive('/contact')}`}>Contact</Link>
+                                    </li>
                                     <li className="nav-item ms-lg-3">
                                         <Link href="/login" className="nav-link">
-                                            <button className="btn btn-outline-light btn-sm">
-                                                Log In
-                                            </button>
+                                            <button className="btn btn-outline-secondary btn-sm">Log In</button>
                                         </Link>
                                     </li>
                                     <li className="nav-item ms-2">
                                         <Link href="/register" className="nav-link">
-                                            <button className="btn btn-primary btn-sm">
-                                                Register
-                                            </button>
+                                            <button className="btn btn-primary btn-sm">Register</button>
                                         </Link>
                                     </li>
-                                </>
-                            )}
-
-                            {/* Settings dropdown - показывать только после авторизации */}
-                            {/* <li className="nav-item dropdown ms-lg-2">
-                                <a
-                                    className="nav-link dropdown-toggle"
-                                    href="#"
-                                    role="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                >
-                                    <i className="fas fa-user-circle"></i>
-                                </a>
-                                <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                                    <li>
-                                        <Link 
-                                            href="/profile" 
-                                            className={`dropdown-item ${isActive('/profile')}`}
-                                        >
-                                            Profile
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link 
-                                            href="/preferences" 
-                                            className={`dropdown-item ${isActive('/preferences')}`}
-                                        >
-                                            Preferences
-                                        </Link>
-                                    </li>
-                                    <li><hr className="dropdown-divider" /></li>
-                                    <li>
-                                        <Link 
-                                            href="/logout" 
-                                            className="dropdown-item"
-                                        >
-                                            Logout
-                                        </Link>
-                                    </li>
+                         
                                 </ul>
-                            </li> */}
-                        </ul>
-                    </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             </nav>
         </header>
     );
-} 
+}

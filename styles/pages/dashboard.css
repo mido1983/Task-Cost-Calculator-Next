@@ -1,0 +1,138 @@
+.dashboardTimeLV {
+    font-weight: 700;
+    margin-left: 2rem;
+    color: #2c3e50;
+}
+
+.welcome-content-dashboard {
+    padding: 15px;
+    margin-right: 25px;
+    border-right: 2px solid #e0e0e0;
+    font-size: 1.1rem;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #f8f9fa;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 10000;
+    width: 250px;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+.sidebar .nav-link {
+    padding: 0.8rem 1.2rem;
+    color: #495057;
+    transition: all 0.2s ease;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #e9ecef;
+    color: #007bff;
+    transform: translateX(5px);
+}
+
+.sidebar .nav-link.active {
+    background-color: #e3f2fd;
+    color: #0056b3;
+    border-left: 4px solid #007bff;
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .welcome-content-dashboard {
+        padding: 10px;
+        margin-right: 15px;
+        font-size: 1rem;
+        border-right: none;
+        text-align: center;
+    }
+
+    .sidebar .nav-link {
+        padding: 1rem 1.5rem;
+    }
+
+    .sidebar.active::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 280px;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+    }
+
+    .content {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+
+/* Close button styling */
+.sidebar-close {
+    display: none;  /* Hidden by default on desktop */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 8px;
+    background: transparent;
+    border: none;
+    color: #495057;
+    cursor: pointer;
+    font-size: 1.2rem;
+    z-index: 1001;
+}
+
+@media (max-width: 768px) {
+    .sidebar-close {
+        display: block;  /* Show on mobile */
+    }
+    
+    /* ... existing mobile styles ... */
+}

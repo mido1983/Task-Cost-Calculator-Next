@@ -21,14 +21,32 @@ app.use(express.json());
 
 app.get('/', async (req, res) => {
     try {
-        const users = await User.find({}); // Исключаем пароль из результата
+        const users = await User.find({}).select('-password'); // Исключаем пароль из результата
         res.json({
-            message: 'Список всех пользователей',
-            users
+            success: true,
+            timestamp: new Date().toISOString(),
+            data: {
+                totalUsers: users.length,
+                users: users.map(user => ({
+                    id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    createdAt: user.createdAt,
+                    role: user.role
+                }))
+            }
         });
-    } catch (error) {
+    } catch (error: unknown) {
         console.error('Error fetching users:', error);
-        res.status(500).json({ message: 'Server error while fetching users' });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        res.status(500).json({
+            success: false,
+            timestamp: new Date().toISOString(),
+            error: {
+                message: 'Server error while fetching users',
+                details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+            }
+        });
     }
 });
 app.use('/api/auth', authRoutes);
