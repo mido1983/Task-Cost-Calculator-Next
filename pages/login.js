@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Layout from '../components/Layout';
 import Link from 'next/link';
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
 export default function Login() {
@@ -15,12 +16,19 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Здесь будет логика авторизации
-            console.log('Login attempt:', formData);
-            // После успешной авторизации
-            router.push('/');
+            const result = await signIn('credentials', {
+                redirect: false,
+                email: formData.email,
+                password: formData.password,
+            });
+
+            if (result.error) {
+                setError(result.error);
+            } else {
+                router.push('/dashboard');
+            }
         } catch (err) {
-            setError('Invalid email or password');
+            setError('Произошла ошибка при подключении к серверу');
         }
     };
 

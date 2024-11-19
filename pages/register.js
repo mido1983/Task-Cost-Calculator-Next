@@ -6,11 +6,14 @@ import { useRouter } from 'next/router';
 
 export default function Register() {
     const router = useRouter();
+    const { plan } = router.query;
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        planType: plan || 'paid-5'
     });
     const [error, setError] = useState('');
 
@@ -21,12 +24,29 @@ export default function Register() {
             return;
         }
         try {
-            // Здесь будет логика регистрации
-            console.log('Registration attempt:', formData);
-            // После успешной регистрации
+            const response = await fetch('api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    password: formData.password,
+                    planType: formData.planType
+                })
+            });
+
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.message || 'Registration failed');
+            }
+
+            // Успешная регистрация
             router.push('/login');
         } catch (err) {
-            setError('Registration failed. Please try again.');
+            setError(err.message || 'Registration failed. Please try again.');
         }
     };
 
@@ -89,6 +109,11 @@ export default function Register() {
                                             required
                                         />
                                     </div>
+                                    <input
+                                        type="hidden"
+                                        name="planType"
+                                        value={formData.planType}
+                                    />
                                     <button type="submit" className="btn btn-primary w-100">
                                         Register
                                     </button>
