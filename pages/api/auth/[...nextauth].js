@@ -1,8 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
-import { User } from '../../../backend/src/models/User';
-import { connectDB } from '../../../backend/src/config/database';
 
 export default NextAuth({
     providers: [
@@ -14,10 +12,18 @@ export default NextAuth({
             },
             async authorize(credentials) {
                 try {
-                    await connectDB();
-                    const user = await User.findOne({ email: credentials.email });
-                    
-                    if (!user) {
+                    // Выполнить запрос к API для получения пользователя вместо прямого импорта модели
+                    const res = await fetch('https://defiant-gratia-mido-dor-ede2723e.koyeb.app/api/user', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email: credentials.email })
+                    });
+
+                    const user = await res.json();
+
+                    if (!user || !user.password) {
                         throw new Error('Invalid credentials');
                     }
 
@@ -25,7 +31,7 @@ export default NextAuth({
                     if (!isValid) {
                         throw new Error('Invalid credentials');
                     }
-                    console.log('User from DB:', user); // Debug log
+                    console.log('User from API:', user); // Debug log
                     return {
                         id: user._id.toString(),
                         email: user.email,
@@ -64,4 +70,4 @@ export default NextAuth({
         signIn: '/login',
     },
     secret: process.env.NEXTAUTH_SECRET
-}); 
+});
