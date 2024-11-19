@@ -42,6 +42,7 @@ export default function Plans() {
             </Head>
             <div className="container py-5">
                 <h1 className="text-center mb-5">Subscription Plans</h1>
+                <h2 className={'text-center bg-warning'}>Page Under Construction</h2>
                 <div className="row justify-content-center">
                     {plans.map((plan) => (
                         <div key={plan.id} className="col-md-4 mb-4">
@@ -62,7 +63,7 @@ export default function Plans() {
                                     </ul>
                                     <Link 
                                         href={`/register?plan=${plan.id}`} 
-                                        className="btn btn-primary mt-auto "
+                                        className="btn btn-primary mt-auto disabled"
                                     >
                                         Register Now
                                     </Link>
